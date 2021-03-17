@@ -1,0 +1,8 @@
+.buttons {
+  font-weight: 500;
+  background-color: aquamarine;
+  margin-right: 15px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
