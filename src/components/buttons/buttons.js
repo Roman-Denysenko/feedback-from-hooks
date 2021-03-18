@@ -6,13 +6,16 @@ import s from './Buttons.module.css';
 
 const Buttons = ({ options, onLeaveFeedback }) => {
   const arrayKeysOptions = Object.keys(options);
+
   const ButtonsItem = item => {
+    const onClick = () => onLeaveFeedback(`${item}`);
+
     return (
       <button
         key={uuidv4()}
         type="button"
         className={s.buttons}
-        onClick={() => onLeaveFeedback(`${item}`)}
+        onClick={onClick}
       >
         {item}
       </button>

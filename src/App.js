@@ -1,56 +1,62 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import Section from './components/section';
 import Buttons from './components/buttons';
 import Statistics from './components/statistics';
 
-class App extends Component {
-  static propTypes = {};
+const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
-  static defaultProps = {};
+  const onLeaveFeedback = feedback => {
+    if (feedback === 'good') {
+      setGood(prevState => {
+        return prevState + 1;
+      });
+    }
 
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+    if (feedback === 'neutral') {
+      setNeutral(prevState => {
+        return prevState + 1;
+      });
+    }
+
+    if (feedback === 'bad') {
+      setBad(prevState => {
+        return prevState + 1;
+      });
+    }
   };
 
-  onLeaveFeedback = feedback => {
-    this.setState(prevState => {
-      return { [feedback]: prevState[feedback] + 1 };
-    });
+  const countTotalFeedback = () => {
+    return good + neutral + bad;
   };
 
-  countTotalFeedback = () => {
-    return this.state.good + this.state.neutral + this.state.bad;
-  };
-
-  countPositiveFeedbackPercentage = () => {
+  const countPositiveFeedbackPercentage = () => {
     const positiveFeedbackPercentage = Number(
-      ((this.state.good / this.countTotalFeedback()) * 100).toFixed(0),
+      ((good / countTotalFeedback()) * 100).toFixed(0),
     );
     return positiveFeedbackPercentage > 0 ? positiveFeedbackPercentage : 0;
   };
 
-  render() {
-    return (
-      <section className="container">
-        <Section title="Please leave feedback">
-          <Buttons
-            options={this.state}
-            onLeaveFeedback={this.onLeaveFeedback}
-          />
-        </Section>
-        <Statistics
-          good={this.state.good}
-          neutral={this.state.neutral}
-          bad={this.state.bad}
-          total={this.countTotalFeedback()}
-          positivePercentage={this.countPositiveFeedbackPercentage()}
+  return (
+    <section className="container">
+      <Section title="Please leave feedback">
+        <Buttons
+          options={{ good, neutral, bad }}
+          onLeaveFeedback={onLeaveFeedback}
         />
-      </section>
-    );
-  }
-}
+      </Section>
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        total={countTotalFeedback()}
+        positivePercentage={countPositiveFeedbackPercentage()}
+      />
+    </section>
+  );
+};
 
 export default App;
